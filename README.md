@@ -120,11 +120,11 @@ You can log every online action you can think of. Page load, traffic source, flo
 
 + Action reporting from PHP
   To enable this feature you need to specify your AIT/STATT
-  `$filtr->setStatToken('your_stat_token');`
+   - `$filtr->setStatToken('your_stat_token');`
   After setting your AIT/STATT you can report actions with the action() function.
   This fuction needs one parameter, that is the actions name like: profile_updated or logout.
-  `$filtr->action('game_dl_started', true, 'json', 6);`
-  Parameters: action name, record only authenticated users, return format (json, js, text), request timeout
+   - `$filtr->action('game_dl_started', true, 'json', 6);`
+   - Parameters: action name, record only authenticated users, return format (json, js, text), request timeout
 
 
 ###More to come, stay tuned!
