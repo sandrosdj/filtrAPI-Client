@@ -112,6 +112,16 @@ You can log every online action you can think of. Page load, traffic source, flo
   - `<a href="#top" onclick="filtrAction('top_link')"></a>`
     This will log that somebody clicked on this link.
 
+#### What to except?
++ If you have already defined a filtrLoaded() function, the analytics script will call it without parameters when it's loaded. It is the best way to tell if your web application can begin work with the Codeparts and stuff.
+
++ We have a prebaked version of the filtrAction() function in Codeparts which uses the standard method to send requests, so you won't need to include jQuery or Zepto.
+  If you want to take advantage of this code, you will need to subscribe. It's not a part of the default output.
+
++ Every Codepart you write will be transformed and minified. We will add a leading semicolon to prevent conflicts, but it's really up to you. Please use only properly constructed codes to save some time not only for us, but for you too.
+
+#### What else?
+
 + Application statistics
   You can use our activity log service to log actions in your apps.
   Add the following to the standard JS query url:
