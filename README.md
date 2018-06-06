@@ -93,6 +93,8 @@ parameter3: -1
 
 - `$this->apps();`
   This will let us know that you want to know the current users whitelist items. You'll get application identifiers.
+- `$filtr->getUserData(ID or Array of IDs)`
+  This will let us load userdata from an ID or an Array of IDs. In case of a single ID it will return a normal user data object. In case of multiple IDs the user data will be the child object of the user ID object.
 
 #### Now you're basically ready to use Filtr. as an authentication system. Hurray!
 I recommend you to try every option out. I'm sure you'll find a lot of useful usecases.
