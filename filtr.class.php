@@ -4,9 +4,9 @@
 	Filtr. Class 4 your Entertainment
 	filtr.sandros.hu
 	Sandros Industries
-	2016. November 26.
+	2018. Június 6.
 
-	Version: 3.0.1a
+	Version: 3.0.3
 --------- */
 
 class filtr extends filtrLogin {
@@ -21,7 +21,7 @@ class filtrLogin
 	/* Filtr. authentication */
 	private $appid;
 	private $apptoken;
-	private $apiurl = 'http://filtr.sandros.hu/api.php';
+	private $apiurl = 'https://filtr.sandros.hu/api.php';
 
 	/* Filtr. Statistics */
 	private $appstattoken;
@@ -123,14 +123,18 @@ class filtrLogin
 
 		// Do what we need to
 		$rawResponse		= curl_exec($ch);
+		//echo($rawResponse);
 		$this->apiResponse	= json_decode($rawResponse);
 
 		// Basic cache
 		if (!$this->lessy && $this->cache)
 		{
 			$cache = fopen($this->cache.$this->token, 'w');
-			fwrite($cache, $rawResponse);
-			fclose($cache);
+			if ($cache)
+			{
+				fwrite($cache, $rawResponse);
+				fclose($cache);
+			}
 			unset($cache);
 		}
 		unset($rawResponse);
@@ -159,6 +163,44 @@ class filtrLogin
 		return $this->apiResponse;
 	}
 
+	// Get user data
+	public function getUserData($id) {
+		if ($this->appid && $this->apptoken && $this->apiurl)
+		{
+			$token = 'getem,'.(is_array($id) ? implode(',', $id) : $id);
+			$token_hash = md5($token);
+			if ($this->cache && file_exists($this->cache.$token_hash) && filemtime($this->cache.$token_hash) >= (time()-$this->cachetimeout) && $data = json_decode(file_get_contents($this->cache.$token_hash)))
+			{
+				if (is_array($id))
+					return $data;
+				else
+					return $data->{$id};
+			}
+			elseif ($data_raw = file_get_contents($this->apiurl.'?appid='.$this->appid.'&apptoken='.$this->apptoken.'&token='.$token))
+			{
+				if ($data = json_decode($data_raw))
+				{
+					if ($this->cache)
+					{
+						$cache = fopen($this->cache.$token_hash, 'w');
+						if ($cache)
+						{
+							fwrite($cache, $data_raw);
+							fclose($cahce);
+						}
+						unset($cache);
+					}
+					unset($data_raw);
+					if (is_array($id))
+						return $data;
+					else
+						return $data->{$id};
+				}
+			}
+		}
+		return false;
+	}
+
 	// Set stat. auth token
 	public function setStatToken($token) {
 		if ($token) {
@@ -185,5 +227,3 @@ class filtrLogin
 	}
 
 }
-
-?>
